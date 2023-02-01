@@ -41,9 +41,66 @@
       </div>
     </div>
     <script type="text/javascript">
-      fetch("http://example.com/movies.json")
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+      // let data = [];
+      // const cards = document.querySelectorAll(".card");
+      // let i = 0;
+      // if (data.length != 0)
+      //   Array.from(cards).forEach((element) => {
+      //     let fio = element.querySelector(".left-info > .fio");
+      //     fio.innerHTML = data[i].fio;
+      //   });
+
+      // console.log(cards);
+      let timerId = setInterval(() => getData(), 1000);
+      let getData = () => {
+        fetch("http://localhost:5000/api")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            updateInfo(data);
+          });
+      };
+
+      let updateInfo = (data) => {
+        if (data.length > 0) {
+          const cards = document.querySelectorAll(".card");
+          let i = 0;
+          Array.from(cards).forEach((element) => {
+            if (i < data.length) {
+              let fio = element.querySelector(".left-info > .fio");
+              fio.innerHTML = data[i].Name;
+              let auto = element.querySelector(".left-info > .auto");
+              auto.innerHTML = data[i].Auto + " " + data[i].Number;
+              let epc = element.querySelector(".right-info > .EPC");
+              epc.innerHTML = data[i].EPC;
+              let power = element.querySelector(".right-info > .power");
+              power.innerHTML = data[i].Rssi;
+              i++;
+            } else {
+              let fio = element.querySelector(".left-info > .fio");
+              fio.innerHTML = "";
+              let auto = element.querySelector(".left-info > .auto");
+              auto.innerHTML = "";
+              let epc = element.querySelector(".right-info > .EPC");
+              epc.innerHTML = "";
+              let power = element.querySelector(".right-info > .power");
+              power.innerHTML = "";
+            }
+          });
+        } else {
+          const cards = document.querySelectorAll(".card");
+          Array.from(cards).forEach((element) => {
+            let fio = element.querySelector(".left-info > .fio");
+            fio.innerHTML = "";
+            let auto = element.querySelector(".left-info > .auto");
+            auto.innerHTML = "";
+            let epc = element.querySelector(".right-info > .EPC");
+            epc.innerHTML = "";
+            let power = element.querySelector(".right-info > .power");
+            power.innerHTML = "";
+          });
+        }
+      };
     </script>
   </body>
 </html>
